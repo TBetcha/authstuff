@@ -19,6 +19,10 @@ async function startApp() {
       root: path.join(__dirname, 'public'),
     })
 
+    app.post('/api/register', {}, (request, reply) => {
+      console.log('request', request.body.password, request.body.email)
+    })
+
     await app.listen(3000)
     console.log('λ 🚀 ')
     console.log(process.env.MONGO_DB)
