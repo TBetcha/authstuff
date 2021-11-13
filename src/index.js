@@ -7,6 +7,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { connectDb } from './db.js'
 import { registerUser } from './accounts/register.js'
+import { authorizeUser } from './accounts/authorize.js'
 
 //ESM change
 const __filename = fileURLToPath(import.meta.url)
@@ -27,6 +28,15 @@ async function startApp() {
         console.error(e)
       }
       console.log('request', request.body.password, request.body.email)
+    })
+
+    app.post('/api/authorize', {}, async (request, reply) => {
+      try {
+        console.log(request.body.email, request.body.password)
+        const userId = await authorizeUser(request.body.email, request.body.password)
+      } catch (e) {
+        console.error(e)
+      }
     })
 
     await app.listen(3000)

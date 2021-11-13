@@ -10,25 +10,65 @@
   </head>
   <body>
     <h1>hello</h1>
+
     <h3>Register Form</h3>
     <form id="register-form" action="text">
       <input type="email" name="email" />
       <input type="password" name="password" />
       <button type="submit">Register</button>
     </form>
+    <br />
+    <hr />
+    <br />
+
+    <h3>Login Form</h3>
+    <form id="login-form" action="text">
+      <input type="email" name="email" />
+      <input type="password" name="password" />
+      <button type="submit">Login</button>
+    </form>
+
     <script>
       ;(() => {
-        const form = document.getElementById('register-form')
-        form.addEventListener('submit', (e) => {
+        //find form
+        const registerForm = document.getElementById('register-form')
+        //wait for event
+        registerForm.addEventListener('submit', (e) => {
           e.preventDefault()
           try {
-            const values = Object.values(form).reduce((obj, field) => {
+            //get form values
+            const values = Object.values(registerForm).reduce((obj, field) => {
               if (field.name) {
                 obj[field.name] = field.value
               }
               return obj
             }, {})
+            //submit form
             fetch('/api/register', {
+              method: 'POST',
+              body: JSON.stringify(values),
+              headers: { 'Content-type': 'application/json; charset=UTF-8' },
+            })
+          } catch (e) {
+            console.error(e)
+          }
+        })
+
+        //find form
+        const loginForm = document.getElementById('login-form')
+        //wait for event
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault()
+          try {
+            //get form values
+            const values = Object.values(loginForm).reduce((obj, field) => {
+              if (field.name) {
+                obj[field.name] = field.value
+              }
+              return obj
+            }, {})
+            //submit form
+            fetch('/api/authorize', {
               method: 'POST',
               body: JSON.stringify(values),
               headers: { 'Content-type': 'application/json; charset=UTF-8' },
