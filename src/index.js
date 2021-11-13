@@ -6,6 +6,7 @@ import fastifyStatic from 'fastify-static'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { connectDb } from './db.js'
+import { registerUser } from './accounts/register.js'
 
 //ESM change
 const __filename = fileURLToPath(import.meta.url)
@@ -20,6 +21,11 @@ async function startApp() {
     })
 
     app.post('/api/register', {}, (request, reply) => {
+      try {
+        registerUser(request.body.email, request.body.password)
+      } catch (e) {
+        console.error(e)
+      }
       console.log('request', request.body.password, request.body.email)
     })
 
