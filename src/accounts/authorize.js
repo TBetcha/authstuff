@@ -19,5 +19,6 @@ export async function authorizeUser(email, password) {
   console.log('isAuthorized', isAuthorized)
 
   //return boolean of if password is correct
+  return { isAuthorized, userId: userData._id }
   // return isAuthorized
 }
