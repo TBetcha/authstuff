@@ -1,6 +1,7 @@
 /** @format */
 
 import { createSession } from './session.js'
+import { createTokens } from './tokens.js'
 
 export async function logUserIn(userId, request, reply) {
   //create session
@@ -12,5 +13,6 @@ export async function logUserIn(userId, request, reply) {
   const sessionToken = await createSession(userId, connectionInformation)
   console.log('session token', sessionToken)
   //creaate jwt
+  const { accessToken, refreshToken } = await createTokens(sessionToken, userId)
   //set cookies
 }
