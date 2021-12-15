@@ -15,4 +15,18 @@ export async function logUserIn(userId, request, reply) {
   //creaate jwt
   const { accessToken, refreshToken } = await createTokens(sessionToken, userId)
   //set cookies
+  const now = new Date()
+  const refreshExpires = now.setDate(now.getDate + 30)
+  reply
+    .setCookie('refreshToken', refreshToken, {
+      path: '/',
+      domain: 'localhost',
+      httpOnly: true,
+      expires: refreshExpires,
+    })
+    .setCookie('accessToken', accessToken, {
+      path: '/',
+      domain: 'localhost',
+      httpOnly: true,
+    })
 }

@@ -45,16 +45,13 @@ async function startApp() {
         )
         if (isAuthorized) {
           await logUserIn(userId, request, reply)
+          reply.send({
+            data: 'User Logged In',
+          })
         }
-        reply
-          .setCookie('testCookie', 'the value is', {
-            path: '/',
-            domain: 'localhost',
-            httpOnly: true,
-          })
-          .send({
-            data: 'testing',
-          })
+        reply.send({
+          data: 'Auth Failed',
+        })
       } catch (e) {
         console.error(e)
       }
@@ -62,6 +59,7 @@ async function startApp() {
 
     app.get('/test', {}, (request, reply) => {
       console.log(request.cookies.testCookie)
+      console.log(request.headers['user-agent'])
       reply.send({
         data: 'hello world from da cookie',
       })
