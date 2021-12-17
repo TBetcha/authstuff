@@ -9,6 +9,7 @@ import { connectDb } from './db.js'
 import { registerUser } from './accounts/register.js'
 import { authorizeUser } from './accounts/authorize.js'
 import fastifyCookie from 'fastify-cookie'
+import { getUserFromCookies } from './accounts/user.js'
 import { logUserIn } from './accounts/logUserIn.js'
 
 //ESM change
@@ -57,12 +58,26 @@ async function startApp() {
       }
     })
 
-    app.get('/test', {}, (request, reply) => {
-      console.log(request.cookies.testCookie)
-      console.log(request.headers['user-agent'])
-      reply.send({
-        data: 'hello world from da cookie',
-      })
+    app.get('/test', {}, async (request, reply) => {
+      try {
+        //verify user login
+
+        const user = await getUserFromCookies(request)
+        //return user email if it exists, otherwise return unauthorized
+        console.log(request.cookies.testCookie)
+        console.log(request.headers['user-agent'])
+        if (user?._id) {
+          reply.send({
+            data: user,
+          })
+        } else {
+          reply.send({
+            data: 'user lookup failed',
+          })
+        }
+      } catch (e) {
+        throw new Error(e)
+      }
     })
 
     await app.listen(3000)
