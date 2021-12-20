@@ -22,6 +22,7 @@ export async function createTokens(sessionToken, userId) {
         sessionToken,
         userId,
       },
+
       JWTSignature
     )
     //return refresh token and access token
