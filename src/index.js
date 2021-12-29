@@ -11,6 +11,7 @@ import { authorizeUser } from './accounts/authorize.js'
 import fastifyCookie from 'fastify-cookie'
 import { getUserFromCookies } from './accounts/user.js'
 import { logUserIn } from './accounts/logUserIn.js'
+import { logUserOut } from './accounts/logUserOut.js'
 
 //ESM change
 const __filename = fileURLToPath(import.meta.url)
@@ -52,6 +53,17 @@ async function startApp() {
         }
         reply.send({
           data: 'Auth Failed',
+        })
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    app.post('/api/logout', {}, async (request, reply) => {
+      try {
+        await logUserOut(request, reply)
+        reply.send({
+          data: 'User Logged Out',
         })
       } catch (e) {
         console.error(e)
